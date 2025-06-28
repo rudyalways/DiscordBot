@@ -11,7 +11,8 @@ from discord import app_commands
 import autogen
 import os
 from autogen import AssistantAgent, ConversableAgent
-from autogen import AFTER_WORK, ON_CONDITION, AfterWorkOption, SwarmAgent, SwarmResult, initiate_swarm_chat
+# AFTER_WORK, ON_CONDITION, AfterWorkOption
+from autogen.agentchat.contrib.swarm_agent import SwarmResult, initiate_swarm_chat
 
 from autogen.agentchat.contrib.capabilities.teachability import Teachability
 from pydantic import BaseModel
@@ -89,7 +90,7 @@ class ReplyFormat(BaseModel):
     reason: str
     response: str
 
-founder_actor_agent = SwarmAgent(
+founder_actor_agent = ConversableAgent(
     name="Founder_Actor_Agent",
     system_message="""You are a founder actor of the company.
     """,
@@ -105,20 +106,20 @@ founder_actor_agent = SwarmAgent(
 # first time chat takes 10s of seconds  to load the vector database
 teachability.add_to_agent(founder_actor_agent)
 
-conversation_split = SwarmAgent(
+conversation_split = ConversableAgent(
     name="conversation_split",
     system_message="You are a expert who can split the conversation history from several part. each part is a whole conversation of a topic.",
     llm_config={"config_list": [{"model": "gpt-4o-mini", "api_key": open_ai_key}]},
     #functions=[history_split]
 )
 
-topic_group = SwarmAgent(
+topic_group = ConversableAgent(
     name="topic_group",
     system_message="you are a expert who can summarize the conversation topic and aggregate the same topic",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": open_ai_key}]},
 )
 
-business_theme_agent = SwarmAgent(
+business_theme_agent = ConversableAgent(
     name="business_theme_agent",
     system_message="You are a business analyst who excels at discovering business themes in conversation transcripts.",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": open_ai_key}]},
@@ -284,6 +285,8 @@ async def listen_public_pipe_message(client):
 
         except Exception as e:
             print(f"Error processing message in private: {e}")
+            print(f"stack trace: {traceback.format_exc()}")
+            print(f"e.message: {e.message}")
             await asyncio.sleep(1)  # Prevent excessive CPU usage
 
 # Schedule background task before starting the bot

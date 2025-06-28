@@ -11,8 +11,8 @@ import autogen
 import os
 from autogen import AssistantAgent, ConversableAgent
 from utils import download_channel_history, find_original_thread, async_pickle_load # type: ignore
-
-from autogen import AFTER_WORK, ON_CONDITION, AfterWorkOption, SwarmAgent, SwarmResult, initiate_swarm_chat
+# AFTER_WORK, ON_CONDITION, AfterWorkOption
+from autogen.agentchat.contrib.swarm_agent import SwarmResult, initiate_swarm_chat
 #from data_process import DataProcesser
 
 import data_definition
@@ -46,7 +46,7 @@ def history_split(context_variables: dict) -> SwarmResult:
     # Returning the updated context so the shared context can be updated
     return SwarmResult(context_variables=context_variables)
 
-conversation_split = SwarmAgent(
+conversation_split = ConversableAgent(
     name="conversation_split",
     system_message="You are a expert who can split the conversation history from several part. each part is a whole conversation of a topic.",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": open_ai_key}]},
@@ -172,6 +172,8 @@ async def on_message(message):
 
     msg_list,msg_dict = await download_channel_history(client, GUILD, CHANNEL)
 
+    print(f"msg_list: {msg_list}")
+
     if not os.path.exists(pipe_name_public_to_private):
         os.mkfifo(pipe_name_public_to_private)
     try:
@@ -218,6 +220,7 @@ async def listen_private_pipe_message(client):
                         general_channel = channel
                         print(f'Found general channel on server: {general_channel.name}')
                     print(f'guild:{guild.name}, channel: {channel.name}')
+            print(f"general_channel: {general_channel}")
         else:
             print(f"general_channel: {general_channel}")
         try:

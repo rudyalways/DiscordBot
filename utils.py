@@ -20,6 +20,7 @@ async def async_pickle_load2(pipe):
 
 
 async def download_channel_history(client, guild_name, channel_name):
+    print(f"download_channel_history: {guild_name}, {channel_name}")
     msg_list = []
     message_dict = {}  # Dictionary to store messages by their IDs
     replied_to_message_ids = set()  # Set to keep track of message IDs that have replies
