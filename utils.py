@@ -28,12 +28,12 @@ async def download_channel_history(client, guild_name, channel_name):
     guild = None
     channel = None
     for tguild in client.guilds:
-        print(f'Guild: {tguild.name}')
+        print(f'Util Guild: {tguild.name}')
         for tchannel in tguild.text_channels:
             print(f'Found channel: {tchannel.name}')
     for tguild in client.guilds:
         if tguild.name == guild_name:
-            print(f'Guild: {tguild.name}')
+            print(f'Util Guild: {tguild.name}')
             for tchannel in tguild.text_channels:
                 if tchannel.name == channel_name:
                     print(f'Found channel: {tchannel.name}')

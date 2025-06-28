@@ -185,7 +185,7 @@ async def on_message(message):
     except Exception as e:
         print(f"Error sending message to pipe in server: {e}")
 
-    await channel.send('Echo from server:' + message.content)
+    #await channel.send('Echo from server:' + message.content)
 
 print(f"TOKEN in bot_on_server: {TOKEN}")
 
@@ -214,7 +214,7 @@ async def listen_private_pipe_message(client):
     while True:
         if general_channel is None:
             for guild in client.guilds:
-                print(f'Private Guild: {guild.name}')
+                print(f'Server Guild: {guild.name}')
                 for channel in guild.text_channels:
                     if channel.name == 'general':
                         general_channel = channel
