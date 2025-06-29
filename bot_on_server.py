@@ -109,7 +109,7 @@ async def tell_me_a_joke(interaction: discord.Interaction):
         },
     )
   data = await site.json()
-  await interaction.response.send_message(data["joke"])
+  #await interaction.response.send_message(data["joke"])
 
 @tree.command(name="summarize", description="Summarize the history")
 async def summarize(interaction: discord.Interaction):
@@ -140,7 +140,7 @@ async def summarize(interaction: discord.Interaction):
   )
   # TODO, post a message, got message id, update message
   
-  await interaction.response.send_message(chat_result.summary)
+  # await interaction.response.send_message(chat_result.summary)
 
 
   #print(msgs)
@@ -228,14 +228,14 @@ async def listen_private_pipe_message(client):
             message_data = await async_pickle_load(pipe_name_private_to_public) 
 
             print(f"Processing message from pipe in server: {message_data}")
-            await general_channel.send('Received message from private in server:' + str(message_data))
+            # await general_channel.send('Received message from private in server:' + str(message_data))
         except Exception as e:
             print(f"Error processing message in server: {e}")
             await asyncio.sleep(1)  # Prevent excessive CPU usage
 
 # Schedule background task before starting the bot
 async def main():
-    asyncio.create_task(listen_private_pipe_message(client))  # Run in parallel
+    # asyncio.create_task(listen_private_pipe_message(client))  # Run in parallel
     await client.start(TOKEN)  # Replaces client.run()
 
 asyncio.run(main())  # Start everything
