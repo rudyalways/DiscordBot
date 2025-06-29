@@ -18,6 +18,23 @@ async def async_pickle_load2(pipe):
     """Runs pickle.load() asynchronously using a separate thread."""
     return await asyncio.to_thread(pickle.load, pipe)  # Non-blocking
 
+# Not Tested yet
+async def download_guild_history_by_name(client, guild_name, channel_name):
+    guild = discord.utils.get(client.guilds, name=guild_name)
+    channel = discord.utils.get(guild.text_channels, name=channel_name)
+    return await download_channel_history(client, guild, channel)
+
+# Not Tested yet
+async def download_guild_history_raw_by_name(client, guild_name, channel_name):
+    guild = discord.utils.get(client.guilds, name=guild_name)
+    channel = discord.utils.get(guild.text_channels, name=channel_name)
+
+    msg_list = []
+    async for message in channel.history(limit=5, oldest_first=False):
+        print(f"download_channel_history: message: {message}")
+        msg_list.append(message)
+    
+
 
 async def download_channel_history(client, guild, channel):
     print(f"download_channel_history: {guild.name}, {channel.name}")
