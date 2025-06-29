@@ -18,32 +18,38 @@ async def async_pickle_load2(pipe):
     """Runs pickle.load() asynchronously using a separate thread."""
     return await asyncio.to_thread(pickle.load, pipe)  # Non-blocking
 
+# Not Tested yet
+async def download_guild_history_by_name(client, guild_name, channel_name):
+    guild = discord.utils.get(client.guilds, name=guild_name)
+    channel = discord.utils.get(guild.text_channels, name=channel_name)
+    return await download_channel_history(client, guild, channel)
 
-async def download_channel_history(client, guild_name, channel_name):
-    print(f"download_channel_history: {guild_name}, {channel_name}")
+# Not Tested yet
+async def download_guild_history_raw_by_name(client, guild_name, channel_name):
+    guild = discord.utils.get(client.guilds, name=guild_name)
+    channel = discord.utils.get(guild.text_channels, name=channel_name)
+
+    msg_list = []
+    async for message in channel.history(limit=5, oldest_first=False):
+        print(f"download_channel_history: message: {message}")
+        msg_list.append(message)
+    
+
+
+async def download_channel_history(client, guild, channel):
+    print(f"download_channel_history: {guild.name}, {channel.name}")
     msg_list = []
     message_dict = {}  # Dictionary to store messages by their IDs
     replied_to_message_ids = set()  # Set to keep track of message IDs that have replies
 
-    guild = None
-    channel = None
-    for tguild in client.guilds:
-        print(f'Util Guild: {tguild.name}')
-        for tchannel in tguild.text_channels:
-            print(f'Found channel: {tchannel.name}')
-    for tguild in client.guilds:
-        if tguild.name == guild_name:
-            print(f'Util Guild: {tguild.name}')
-            for tchannel in tguild.text_channels:
-                if tchannel.name == channel_name:
-                    print(f'Found channel: {tchannel.name}')
-                    guild = tguild
-                    channel = tchannel
-    
-    print(f'guild:{guild}, channel: {channel}')
+    # for tguild in client.guilds:
+    #     print(f'Util Guild log: {tguild.name}')
+    #     for tchannel in tguild.text_channels:
+    #         print(f'Found channel log: {tchannel.name}')
 
 
     async for message in channel.history(limit=5, oldest_first=False):
+        print(f"download_channel_history: message: {message}")
         message_data = {
             "id": str(message.id),
             "author": str(message.author),
