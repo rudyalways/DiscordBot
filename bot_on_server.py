@@ -149,6 +149,9 @@ async def summarize(interaction: discord.Interaction):
 
 @client.event
 async def on_message(message):
+    message_guild = message.guild
+    message_channel = message.channel
+    
     founder_list = ['rudyrrr'] # to update
 
     if message.author == client.user:  # ignore the message from the bot itself
@@ -170,7 +173,7 @@ async def on_message(message):
     pipe_name_public_to_private = sys.argv[2]
     print(f"pipe_name from bot_on_server: {pipe_name_public_to_private}")
 
-    msg_list,msg_dict = await download_channel_history(client, GUILD, CHANNEL)
+    msg_list,msg_dict = await download_channel_history(client, message_guild, message_channel)
 
     print(f"msg_list: {msg_list}")
 
