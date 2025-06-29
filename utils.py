@@ -33,6 +33,7 @@ async def download_guild_history_raw_by_name(client, guild_name, channel_name):
     async for message in channel.history(limit=5, oldest_first=False):
         print(f"download_channel_history: message: {message}")
         msg_list.append(message)
+    return msg_list
     
 
 
