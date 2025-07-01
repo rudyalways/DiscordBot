@@ -19,25 +19,25 @@ async def async_pickle_load2(pipe):
     return await asyncio.to_thread(pickle.load, pipe)  # Non-blocking
 
 # Not Tested yet
-async def download_guild_history_by_name(client, guild_name, channel_name):
+async def download_guild_history_by_name(client, guild_name, channel_name, limit=2):
     guild = discord.utils.get(client.guilds, name=guild_name)
     channel = discord.utils.get(guild.text_channels, name=channel_name)
-    return await download_channel_history(client, guild, channel)
+    return await download_channel_history(client, guild, channel, limit=limit)
 
 # Not Tested yet
-async def download_guild_history_raw_by_name(client, guild_name, channel_name):
+async def download_guild_history_raw_by_name(client, guild_name, channel_name, limit=2):
     guild = discord.utils.get(client.guilds, name=guild_name)
     channel = discord.utils.get(guild.text_channels, name=channel_name)
 
     msg_list = []
-    async for message in channel.history(limit=5, oldest_first=False):
+    async for message in channel.history(limit=limit, oldest_first=False):
         print(f"download_channel_history: message: {message}")
         msg_list.append(message)
     return msg_list
     
 
 
-async def download_channel_history(client, guild, channel):
+async def download_channel_history(client, guild, channel, limit=2):
     print(f"download_channel_history: {guild.name}, {channel.name}")
     msg_list = []
     message_dict = {}  # Dictionary to store messages by their IDs
@@ -49,7 +49,7 @@ async def download_channel_history(client, guild, channel):
     #         print(f'Found channel log: {tchannel.name}')
 
 
-    async for message in channel.history(limit=5, oldest_first=False):
+    async for message in channel.history(limit=limit, oldest_first=False):
         print(f"download_channel_history: message: {message}")
         message_data = {
             "id": str(message.id),
