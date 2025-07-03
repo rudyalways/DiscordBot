@@ -37,7 +37,7 @@ async def download_guild_history_raw_by_name(client, guild_name, channel_name, l
     
 
 
-async def download_channel_history(client, guild, channel, limit=2):
+async def download_channel_history(client, guild, channel, limit=5):
     print(f"download_channel_history: {guild.name}, {channel.name}")
     msg_list = []
     message_dict = {}  # Dictionary to store messages by their IDs
